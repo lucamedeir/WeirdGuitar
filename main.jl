@@ -7,7 +7,7 @@ begin #space discretization
 end
 
 begin #time discretization
-    T=10
+    T=1
     Nt=100
     tl=LinRange(0,T,Nt)
     Δt=T/(Nt-1)
