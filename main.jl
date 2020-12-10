@@ -3,9 +3,8 @@ begin #space discretization
   Nx = 100
   xl = LinRange(0,L,Nx+2)
   xlu = xl[2:end-1]
-  Deltax = L/(Nx+1)
+  Δx = L/(Nx+1)
 end
-
 
 begin #time discretization
     T=10
@@ -17,15 +16,16 @@ end;
 c(x) =17; #velocity profile
 
 begin #discretization matrix
-    usingLinearAlgebra
+    using LinearAlgebra
     M11=zeros(Nx,Nx)
-    M12=IM21=Tridiagonal((c.(xlu[2:end]).^2)./Δx^2,(c.(xlu).^2).*(-2)/Δx^2,(c.(xlu[1:end-1]).^2)./Δx^2)
-    M22=zeros(Nx,Nx
-    )M= [M11M12;M21M22]
+    M12=I
+    M21=Tridiagonal((c.(xlu[2:end]).^2)./Δx^2,(c.(xlu).^2).*(-2)/Δx^2,(c.(xlu[1:end-1]).^2)./Δx^2)
+    M22=zeros(Nx,Nx)
+    M= [M11 M12;M21 M22]
 end;
 
-begin #implicit Euler
-    methodMM=I+M.*(Δt)
+begin #implicit Euler method
+    MM=I+M.*(Δt)
     iMM=inv(Array(MM))
 end;
 
