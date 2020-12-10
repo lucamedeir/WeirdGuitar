@@ -19,7 +19,10 @@ begin #discretization matrix
     using LinearAlgebra
     M11=zeros(Nx,Nx)
     M12=I
-    M21=Tridiagonal((c.(xlu[2:end]).^2)./Δx^2,(c.(xlu).^2).*(-2)/Δx^2,(c.(xlu[1:end-1]).^2)./Δx^2)
+    beta1 = (c.(xlu[2:end]).^2)./Δx^2
+    alfa = (c.(xlu).^2).*(-2)/Δx^2
+    beta2 = (c.(xlu[1:end-1]).^2)./Δx^2
+    M21=Tridiagonal(beta1,alfa,beta2)
     M22=zeros(Nx,Nx)
     M= [M11 M12;M21 M22]
 end;
