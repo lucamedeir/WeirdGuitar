@@ -50,4 +50,4 @@ begin #animation
     end
 end
 
-gif(anim,"Ruela's_guitar.gif",fps=10)
+gif(anim,"Ruela's_guitar.gif",fps=30)
