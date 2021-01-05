@@ -28,7 +28,7 @@ begin #discretization matrix
 end;
 
 begin #implicit Euler method
-    MM=I+M.*(Δt)
+    MM=I-M.*(Δt)
     iMM=inv(Array(MM))
 end;
 
