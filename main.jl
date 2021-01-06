@@ -13,7 +13,7 @@ begin #time discretization
     Δt=T/(Nt-1)
 end;
 
-c(x) =17; #velocity profile
+c(x) =1; #velocity profile
 
 begin #discretization matrix
     using LinearAlgebra
@@ -27,9 +27,10 @@ begin #discretization matrix
     M= [M11 M12;M21 M22]
 end;
 
-begin #implicit Euler method
-    MM=I+M.*(Δt)
-    iMM=inv(Array(MM))
+begin #Crank-Nicolson method
+    MMl=I-M.*(Δt/2) #left-hand side matrix
+    MMr=I+M.*(Δt/2) #right-hand side matrix
+    iMM=inv(Array(MMl))*MMr
 end;
 
 begin #initial conditions
