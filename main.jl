@@ -27,10 +27,10 @@ begin #discretization matrix
     M= [M11 M12;M21 M22]
 end;
 
-begin #implicit Euler method
-    MMe=I-M.*(Δt/2)
-    MMd=I+M.*(Δt/2)
-    iMM=inv(Array(MMe))*MMd
+begin #Crank-Nicolson method
+    MMl=I-M.*(Δt/2) #left-hand side matrix
+    MMr=I+M.*(Δt/2) #right-hand side matrix
+    iMM=inv(Array(MMl))*MMr
 end;
 
 begin #initial conditions
