@@ -1,6 +1,6 @@
 begin #space discretization
   L = 1
-  Nx = 100
+  Nx = 1000
   xl = LinRange(0,L,Nx+2)
   xlu = xl[2:end-1]
   Δx = L/(Nx+1)
@@ -13,7 +13,7 @@ begin #time discretization
     Δt=T/(Nt-1)
 end;
 
-c(x) =1; #velocity profile
+c(x) =1/10; #velocity profile
 
 begin #discretization matrix
     using LinearAlgebra
@@ -34,7 +34,23 @@ begin #Crank-Nicolson method
 end;
 
 begin #initial conditions
-    phi0=sin.((pi/L).*xlu)
+    function guitar(x)
+        px = 2*L/3
+        py = 1
+        if x < px
+            py/px*x
+        else
+            py/(L-px)*(-x+L)
+        end
+    end
+
+    function gauss(x)
+        μ = L/2
+        σ = L/100
+        exp(-(x-μ)^2/(2*σ)^2)
+    end
+
+    phi0=gauss.(xlu)#=guitar.(xlu)=##=sin.((pi/L).*xlu)=#
     pi0=zeros(Nx)
     sol= [[phi0; pi0]]
 end;
@@ -54,4 +70,4 @@ begin #animation
     end
 end
 
-gif(anim,"Ruela's_guitar.gif",fps=30)
+gif(anim,"Ruela's_guitar.gif",fps=Nt/T#=30=#)
