@@ -1,6 +1,6 @@
 begin #space discretization
   L = 1
-  Nx = 100
+  Nx = 1000
   xl = LinRange(0,L,Nx+2)
   xlu = xl[2:end-1]
   Δx = L/(Nx+1)
@@ -8,7 +8,7 @@ end
 
 begin #time discretization
     T=1
-    Nt=100
+    Nt=500
     tl=LinRange(0,T,Nt)
     Δt=T/(Nt-1)
 end;
@@ -34,7 +34,7 @@ begin #Crank-Nicolson method
 end;
 
 begin #initial conditions
-    phi0=sin.((pi/L).*xlu)
+    phi0=sin.(( 50 * pi/L).*xlu) + sin.(( 123 * pi/L).*xlu)
     pi0=zeros(Nx)
     sol= [[phi0; pi0]]
 end;
@@ -45,11 +45,24 @@ begin #applies implicit Euler method
     end
 end;
 
+begin
+    using FFTW
+    fft_sol = []
+    for i in 1:Nt
+        push!(fft_sol, fft([0;sol[i][1:Nx];0]) |> fftshift)
+    end
+
+end
+
 begin #animation
     using Plots
     anim=Plots.Animation()
+
+    Xs = 1 / (1.1 * (Nx+2)/2)
+    freqs = fftfreq(length(xl), 1.0/Xs) |> fftshift
+
     for i in 1:Nt
-        plot(xl,[0;sol[i][1:Nx];0],legend=false,ylims=(-1,1))
+        plot(freqs,abs.(fft_sol[i]),legend=false,xlim=(0,200),ylim=(0,500))
         Plots.frame(anim)
     end
 end
