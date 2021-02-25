@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-begin #space discretization
-  L = 1
-  Nx = 100
-  xl = LinRange(0,L,Nx+2)
-  xlu = xl[2:end-1]
-  Δx = L/(Nx+1)
-end
-
-begin #time discretization
-    T=1
-    Nt=100
-    tl=LinRange(0,T,Nt)
-    Δt=T/(Nt-1)
-=======
 #===============================================================================
 NUMERICAL SETUP
 ===============================================================================#
@@ -22,7 +7,6 @@ begin # Space discretization
   xl = LinRange(0,L,Nx+2) # Space grid including boundary points
   xlu = xl[2:end-1] # Space grid without boundary points
   Δx = L/(Nx+1) # Space step
->>>>>>> 82b97c9a141289b79a5e262f673c9044ae34b507
 end;
 
 begin # Time discretization
@@ -78,7 +62,7 @@ begin # Initial conditions (can be chosen at will)
         σ = L/100 # Standard deviation
         exp(-(x-μ)^2/(2*σ)^2)*(-2)/(2*σ^2)*(x-μ)*(c(x))
     end
-    phi0 = gauss.(xlu)#=pluck.(xlu)=##=sin.((pi/L).*xlu)=# # Initial position Φ0
+    phi0 = sin.((pi/L).*xlu)#gauss.(xlu)#=pluck.(xlu)=##=# # Initial position Φ0
     pi0 = #=dgauss.(xlu)=#zeros(Nx) # Initial velocity Π0
     sol = [[phi0; pi0]] # Initial Y vector (see LaTeX document)
 end;

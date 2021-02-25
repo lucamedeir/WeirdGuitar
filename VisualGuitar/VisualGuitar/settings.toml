@@ -1,0 +1,4 @@
+[library]
+name = "toml++"
+authors = ["Mark Gillard <mark.gillard@outlook.com.au>"]
+cpp = 18
