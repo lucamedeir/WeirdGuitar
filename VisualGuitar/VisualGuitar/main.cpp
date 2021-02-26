@@ -1,3 +1,5 @@
+//TODO add toml parsing variable omega and k
+
 #include<iostream>
 #include <vector>
 #include<gsl/gsl_sf_trig.h>
