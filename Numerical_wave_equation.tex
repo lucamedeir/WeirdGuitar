@@ -9,7 +9,6 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{amsfonts}
 \usepackage[textwidth=450pt]{geometry}
-\usepackage{nicematrix}
 
 \definecolor{grayII}{gray}{0.3}
 
@@ -21,7 +20,7 @@ We want to find out what a guitar string with variable mass density would sound 
 \boxed{\frac{1}{c(x)^2}\frac{\partial^2 \Phi}{\partial t^2}=\frac{\partial^2 \Phi}{\partial x^2}.}
 \end{equation}
 
-From the mathematical theory of partial differential equations (EDPs), we know that we need both boundary and initial conditions to get a unique solution. For a guitar string, we impose:
+From the mathematical theory of partial differential equations (PDEs), we know that we need both boundary and initial conditions to get a unique solution. For a guitar string, we impose:
 
 \begin{equation}\label{cwe}
 \left\{\begin{array}{cc}
@@ -34,9 +33,9 @@ From the mathematical theory of partial differential equations (EDPs), we know t
 \displaystyle\frac{\partial \Phi}{\partial t}(0,x)=g(x)&\text{ }
 \end{array}\right.,
 \end{equation}
-where $L$ is the length of the string and $f(x)$ and $g(x)$ are functions representing the shape and the velocity of the string, respectively, upon being plucked.
+where $L$ is the length of the string and $f(x)$ and $g(x)$ are functions representing the shape and the velocity of the string, respectively, upon being plucked or stricken.
 
-For our purposes, it is more convenient to work with first order equations in time. Define $\Pi(t,x)\equiv\displaystyle\frac{\partial \Phi}{\partial t}$. The problem \eqref{cwe} is then translated into:
+For our purposes, it is more convenient to work with first order equations in time. Define $\Pi(t,x)\equiv\displaystyle\frac{\partial \Phi}{\partial t}$. Problem \eqref{cwe} is then translated into:
 
 \begin{equation}\label{cweII}
 \left\{\begin{array}{cc}
@@ -63,14 +62,14 @@ In the finite differences approach, we need to discretize the domain into a grid
 \caption{\label{fig1}Spacetime discretization grid to be used in the numerical solution of the problem. We show in red the boundary of the domain where the problem is defined. The labeling is chosen so that there are $N$ spatial points \textit{not on the boundary for a given time step}.}
 \end{figure}
 
-As can be seen in figure \ref{fig1}, each point in the grid $(t_n,x_j)$ is labeled by a spatial index $j=0,1,..., N+1$ and a temporal index $n=0,1,...$. The points are separated from each other by both a spatial step $\Delta x$ and a time step $\Delta t$. Our unknown functions $\Phi(t,x)$ and $\Pi(t,x)$ can then be evaluated on a specific point $(t_n,x_j)$; we define $\Phi(t_n,x_j)\equiv \Phi^n_j$ and $\Pi(t_n,x_j)\equiv \Pi^n_j$.
+As can be seen in figure \ref{fig1}, each point on the grid $(t_n,x_j)$ is labeled by a spatial index $j=0,1,..., N+1$ and a temporal index $n=0,1,...$. The points are separated from each other by both a spatial step $\Delta x$ and a time step $\Delta t$. Our unknown functions $\Phi(t,x)$ and $\Pi(t,x)$ can then be evaluated on a specific point $(t_n,x_j)$: We define $\Phi(t_n,x_j)\equiv \Phi^n_j$ and $\Pi(t_n,x_j)\equiv \Pi^n_j$.
 
-Now, we know that, using Taylor expansions, we can aproximate derivatives on a grid. For example, the following is true \textit{if the spatial grid is regular}:
+Using Taylor expansions, we can aproximate derivatives on a grid. For example, the following is true \textit{if the spatial grid is regular}:
 
 \begin{equation}\label{te}
 \left.\frac{\partial^2 \Phi}{\partial x^2}\right|_{(t_n,x_j)}\approx\frac{\Phi^n_{j+1}-2\Phi^n_j+\Phi^n_{j-1}}{\Delta x^2},
 \end{equation}
-as a second-order approximation for the laplacian operator. Let us then choose a general time step $t_n$, $n\neq0$, and apply the equations of motion for every point $x_j$ \textit{not on the boundary}:
+as a second-order approximation for the Laplacian operator. Let us then choose a general time step $t_n$, $n\neq0$, and apply the equations of motion for every point $x_j$ \textit{not on the boundary}:
 
 \begin{equation}\label{discr}
 \left\{\begin{array}{cc}
@@ -102,7 +101,7 @@ For a given time step $t_n$, $n\neq0$, we can interpret \eqref{discr} as a syste
 
 Indeed, because the wave equation is linear, it is convenient to condense the unknowns into a big vector. We can then write the right-hand side of \eqref{discr} as $\bm{M}^n\cdot\bm{Y}^n$ for a suitable matrix $\bm{M}^n$ that depends only on the parameters of the problem (in the present case, the speed of sound function $c(x)$).
 
-However, one must be careful in constructing the matrix $\bm{M}^n$. Remember that the boundary values $\Phi^n_0$, $\Phi^n_{N+1}$, $\Pi^n_0$ and $\Pi^n_{N+1}$ do not enter $\bm{Y}^n$ as they are not unknowns. In order to see this clearly, take for example $j=1$ and $j=2$ in the second set of equations in \eqref{discr}:
+However, one must be careful in constructing $\bm{M}^n$. Remember that the boundary values $\Phi^n_0$, $\Phi^n_{N+1}$, $\Pi^n_0$ and $\Pi^n_{N+1}$ do not enter $\bm{Y}^n$ as they are not unknowns. In order to see this clearly, take for example $j=1$ and $j=2$ in the second set of equations in \eqref{discr}:
 
 \begin{equation}\label{calma}
 \left\{\begin{array}{c}
@@ -112,7 +111,7 @@ However, one must be careful in constructing the matrix $\bm{M}^n$. Remember tha
 \end{array}\right..
 \end{equation}
 
-In \eqref{calma}, we use the same color scheme as in figure \ref{fig1}: gray indicates points inside the open domain and red indicates points on its boundary. Something similar happens for $j=N-1$ and $j=N$:
+In \eqref{calma}, we use the same color scheme as in figure \ref{fig1}: gray is for points inside the open domain and red is for points on its boundary. Something similar happens for $j=N-1$ and $j=N$:
 
 \begin{equation}\label{calmaII}
 \left\{\begin{array}{c}
@@ -162,10 +161,10 @@ where $\mathbb{O}$ and $\mathbb{I}$ represent the null matrix and the indentity 
 \displaystyle\left(\frac{\partial \Pi}{\partial t}\right)^n_1\\
 \vdots\\
 \displaystyle\left(\frac{\partial \Pi}{\partial t}\right)^n_N
-\end{array}\right]=\textcolor{grayII}{\bm{M^n}}\cdot \bm{Y^n}+\textcolor{Red}{B^n}\equiv \bm{F^n}(\bm{Y^n})
+\end{array}\right]=\textcolor{grayII}{\bm{M^n}}\cdot \bm{Y^n}+\textcolor{Red}{B^n}\equiv \bm{F^n}(\bm{Y^n}).
 \end{equation}
 
-Only one time step $t_n$, $n\neq0$ has been dealt with so far. Now, we want to evolve our initial conditions in time using \eqref{cond}.
+Only one time step $t_n$, $n\neq0$, has been dealt with so far. Now, we want to evolve our initial conditions in time using \eqref{cond}.
 
 \subsection{Explicit Euler Method}
 
@@ -180,7 +179,7 @@ But $\displaystyle\frac{d \bm{Y}}{d t}$ is given by \eqref{cond}. Therefore:
 \boxed{\bm{Y^{n}}\approx\bm{Y^{n-1}}+\bm{F^{n-1}}(\bm{Y^{n-1}})\Delta t, \text{ }n=1,2,...}
 \end{equation}
 
-This is the \textit{explicit Euler method}: we can find the values of the unknowns on a chosen time step using only their values on the previous time step. Notice that, from \eqref{cond}, the function $\bm{F^n}$ \textit{already incorporates the boundary conditions} and, thus, the evolution takes them into account. Furthermore, $\bm{F^n}$ depends on the time step itself, so that in general we have to build a new matrix for each step. Nevertheless, our problem is a little bit simpler: because neither the speed of sound nor the boundary conditions are functions of time, the evolution matrix coming from $\bm{F}$ is the same for all iterations. We then only need to build one matrix and keep applying it to the each time step vector. 
+This is the \textit{explicit Euler method}: We can find the values of the unknowns on a chosen time step using only their values on the previous time step. Notice that, from \eqref{cond}, the function $\bm{F^n}$ \textit{already incorporates the boundary conditions} and, thus, the evolution takes them into account. Furthermore, $\bm{F^n}$ depends on the time step itself, so that in general we have to build a new matrix for each step. Nevertheless, our problem is a little bit simpler: Because neither the speed of sound nor the boundary conditions are functions of time, the evolution matrix coming from $\bm{F}$ is the same for all iterations. We then only need to build one matrix and keep applying it to each time step vector. 
 
 \subsection{Implicit Euler Method}
 
@@ -197,7 +196,7 @@ Again, from \eqref{cond}, we can write:
 \boxed{\bm{Y^{n}}-\bm{F^{n}}(\bm{Y^n})\Delta t\approx\bm{Y^{n-1}}, \text{ }n=1,2,...}
 \end{equation}
 
-However, we do not know $\bm{Y^n}$; this is exactly what we want to find from a given $\bm{Y^{n-1}}$. Equation \eqref{eeulerimp}, then, involves calculating the inverse of the matrix $\bm{\mathbb{I}}-\textcolor{grayII}{\bm{M^n}}$ for each iteration. Once again, our guitar string setting is simpler: we only need to calculate this inverse matrix once, since neither the speed of sound function nor the boundary conditions depend on time.
+However, we do not know $\bm{Y^n}$; that is exactly what we want to find from a given $\bm{Y^{n-1}}$. Equation \eqref{eeulerimp}, then, involves calculating the inverse of the matrix $\bm{\mathbb{I}}-\textcolor{grayII}{\bm{M^n}}$ for each iteration. Once again, our guitar string setting is simpler: we only need to calculate this inverse matrix once, since neither the speed of sound function nor the boundary conditions depend on time.
 
 \subsection{Explicit Runge-Kutta Method}
 Involves calculating $\bm{F}$ in ``virtual'' points between $t_{n-1}$ e $t_{n}$.
@@ -207,8 +206,79 @@ Same thing but implicit.
 
 \subsection{Crank-Nicolson Method}
 Average between explicit and implicit Euler.
+
+\section{Benchmarking the Code}
+
+Whenever one builds simulations, it is necessary to check their validity. This is particularly important if the results of the simulation are novel and thus are not to be found in any textbook or articles. As physicists, we like conserved quantities very much. Therefore, a possible check is calculating some quantity that should be conserved in theory and verifying if it is actually constant (within some specified margin of error) in the numerics. In the present problem, \eqref{we} is clearly symmetric with respect to time translations. Noether's theorem then tells us that the energy of the system is conserved. Let us do a quick review of this result and see how the energy of the guitar string arises.
+
+Noether's theorem appears in many different guises nowadays. Nonetheless, her original idea deals with actions, which are things physicists like very much as well. An action $\mathcal{S}:\mathcal{F}\mapsto\mathbb{R}$ is simply a function that takes a function $\Phi(t,x)\in\mathcal{F}$ and gives us a real number $\mathcal{S}[\Phi]\in\mathbb{R}$ in return. In physics, we are mainly interested in actions that are written as integrals of the argument over some domain $\Omega$:
+
+\begin{equation}\label{actiondef}
+\mathcal{S}[\Phi]=\int_\Omega\mathcal{L}\left(\Phi,\frac{\partial \Phi}{\partial t},\frac{\partial \Phi}{\partial x},t,x\right)\text{ }dtdx,
+\end{equation}
+$\mathcal{L}$ being called the \textit{Lagrangian} of the physical system.
+
+We can do all sorts of transformations in the space $\mathcal{F}$. Indeed, extremizing $\mathcal{S}$ in order to find the equations of motion of the system involves one such transformation. If $\Phi_0(t,x)$ is a solution of the equations of motion, then a (first-order) perturbation $\Phi_0(t,x)+\delta\Phi(t,x)$ leads to:
+
+\begin{align}\label{solution}
+\mathcal{S}[\Phi_0+\delta\Phi]&\approx\mathcal{S}[\Phi_0]+\int_\Omega\left.\frac{\partial \mathcal{L}}{\partial\Phi}\right|_{\Phi_0}\delta\Phi+\left.\frac{\partial \mathcal{L}}{\partial\left(\partial\Phi/\partial t\right)}\right|_{\Phi_0}\frac{\partial\delta\Phi}{\partial t}+\left.\frac{\partial \mathcal{L}}{\partial\left(\partial\Phi/\partial x\right)}\right|_{\Phi_0}\frac{\partial\delta\Phi}{\partial x}\text{ }dtdx\notag\\
+\Rightarrow\delta\mathcal{S}[\Phi_0,\delta\Phi]&=\int_\Omega\left(\left.\frac{\partial \mathcal{L}}{\partial\Phi}\right|_{\Phi_0}-\frac{\partial}{\partial t}\left(\left.\frac{\partial \mathcal{L}}{\partial\left(\partial\Phi/\partial t\right)}\right|_{\Phi_0}\right)-\frac{\partial}{\partial x}\left(\left.\frac{\partial \mathcal{L}}{\partial\left(\partial\Phi/\partial x\right)}\right|_{\Phi_0}\right)\right)\delta\Phi\text{ }dtdx\notag\\
+&+\int_{\Omega}\frac{\partial}{\partial t}\left(\left.\frac{\partial \mathcal{L}}{\partial\left(\partial\Phi/\partial t\right)}\right|_{\Phi_0}\delta\Phi\right)+\frac{\partial}{\partial x}\left(\left.\frac{\partial \mathcal{L}}{\partial\left(\partial\Phi/\partial x\right)}\right|_{\Phi_0}\delta\Phi\right)\text{ }dtdx.
+\end{align}
+
+In physics, one is mainly concerned with Hamilton's principle: Extremization \eqref{solution} is performed under the assumption that the perturbation vanishes on the boundary, which makes sense if boundary conditions are given. Therefore, the last integral in \eqref{solution}, which can be evaluated on the boundary using Stokes' theorem, would vanish and we would find the Euler-Lagrange equations
+
+\begin{equation}\label{ELE}
+\left.\frac{\partial \mathcal{L}}{\partial\Phi}\right|_{\Phi_0}-\frac{\partial}{\partial t}\left(\left.\frac{\partial \mathcal{L}}{\partial\left(\partial\Phi/\partial t\right)}\right|_{\Phi_0}\right)-\frac{\partial}{\partial x}\left(\left.\frac{\partial \mathcal{L}}{\partial\left(\partial\Phi/\partial x\right)}\right|_{\Phi_0}\right)=0
+\end{equation}
+for the actual evolution of the field $\Phi_0(t,x)$. Nonetheless, for a general perturbation $\delta\Phi$, we must keep the last integral in \eqref{solution}. Let us keep that in mind.
+
+A \textit{symmetry} is \textit{defined} as a specific kind of perturbation $\delta\Phi_S$, namely, the one that, \textit{for every} $\Phi$, satisfies:
+
+\begin{equation}\label{symm}
+\delta\mathcal{S}[\Phi,\delta\Phi_S]=\int_\Omega\frac{\partial \Lambda_t}{\partial t}+\frac{\partial \Lambda_x}{\partial x}\text{ }dtdx,
+\end{equation}
+for some vector $\bm{\Lambda}(t,x)=\Lambda_t(t,x)\bm{e_t}+\Lambda_x(t,x)\bm{e_x}$.
+
+In other words, \eqref{symm} is a statement about $\mathcal{F}$ and $\mathcal{S}$ themselves: A symmetry is a transformation that modifies the action by \textit{at most} a boundary term. Indeed, the name symmetry is quite appropriate, since such a transformation will not change the equations of motion of the system (because of Hamilton's principle).
+
+In \eqref{solution}, $\delta\Phi$ is any perturbation; we can then choose it to be a symmetry perturbation $\delta\Phi_s$. Likewise, \eqref{symm} is true for any function $\Phi$; let us choose a solution of the equations of motion $\Phi_0$. Thus, because $\Phi_0$ satisfies the Euler-Lagrange equations \eqref{ELE}, we arrive at a continuity equation:
+
+\begin{equation}\label{noether}
+\boxed{\frac{\partial}{\partial t}\left(\left.\frac{\partial \mathcal{L}}{\partial\left(\partial\Phi/\partial t\right)}\right|_{\Phi_0}\delta\Phi_S-\Lambda_t\right)+\frac{\partial}{\partial x}\left(\left.\frac{\partial \mathcal{L}}{\partial\left(\partial\Phi/\partial x\right)}\right|_{\Phi_0}\delta\Phi_S-\Lambda_x\right)=0},
+\end{equation}
+satisfied by $\Phi_0$. This is Noether's theorem: \textit{To every continuous symmetry is associated a conservation equation}. Notice the symmetry is described in terms of perturbations and indeed must be continuous in order for Noether's result to be applied. Parity or time reversion symmetries are not continuous and therefore would not lead to conserved equations.
+
+All this is dreadfully abstract. Let us see how it applies to our guitar string problem. First of all, we need an action. It is easy to check that extremizing the action
+
+\begin{equation}\label{wea}
+\mathcal{S}[\Phi]=\frac{\alpha}{2}\int_\Omega-\frac{1}{c(x)^2}\left(\frac{\partial\Phi}{\partial t}\right)^2+\left(\frac{\partial\Phi}{\partial x}\right)^2\text{ }dtdx
+\end{equation}
+leads to our original wave equation \eqref{we}. As good physicists that we are, we would like our action to actually have dimensions of action. The constant $\alpha$ is doing that for us. Although it is undetermined, it will not affect any of our calculations.
+
+Time translation $t \rightarrow t+constant$ is clearly a symmetry of the equations of motion, in the sense that they are not changed by such transformation. It is further a continuous symmetry. Noether's theorem tells us that something is conserved. We usually associate \textit{energy} to the conserved quantity from time translation symmetry.
+
+Time translation is a transformation in actual spacetime and not in the function space $\mathcal{F}$. However, one can easily be translated into the other. Indeed, if $t'=t+\epsilon$, then $\Phi(t)=\Phi(t'-\epsilon)\equiv\Phi'(t')\approx\Phi(t')-\frac{\partial \Phi}{\partial t'}\epsilon$. In other words, time translation can be seen as $\Phi(t')\rightarrow\Phi(t')-\frac{\partial \Phi}{\partial t'}\epsilon$ in function space.
+
+Let us check if $\delta\Phi_S=-\frac{\partial \Phi}{\partial t}\epsilon$ is a symmetry in Noether's sense. If it is, then $\delta\mathcal{S}[\Phi,\delta\Phi_s]$ must be a boundary term. Using \eqref{wea}, it is straightforward to check that this is indeed what happens:
+
+\begin{equation}\label{btwe}
+\delta\mathcal{S}\left[\Phi,-\frac{\partial \Phi}{\partial t}\epsilon\right]=\int_\Omega\frac{\partial}{\partial t}\left[\frac{\alpha}{2}\left(\frac{1}{c(x)^2}\left(\frac{\partial\Phi}{\partial t}\right)^2-\left(\frac{\partial\Phi}{\partial x}\right)^2\right)\epsilon\right]\text{ }dtdx.
+\end{equation}
+Comparing to \eqref{symm}, we have $\bm{\Lambda}(t,x)=\left(\frac{\alpha}{2}\left(\frac{1}{c(x)^2}\left(\frac{\partial\Phi}{\partial t}\right)^2-\left(\frac{\partial\Phi}{\partial x}\right)^2\right)\epsilon\right)\bm{e_t}$.
+
+Knowing the boundary term associated to time translation symmetry, we can readily write \eqref{noether} using the action \eqref{wea}. Our conservation equation is:
+
+\begin{equation}\label{noetherenergy}
+\boxed{\frac{\partial}{\partial t}\left(\frac{1}{2}\left(\frac{\partial\Phi}{\partial t}\right)^2+\frac{1}{2}\left(\frac{\partial\Phi}{\partial x}\right)^2\right)+\frac{\partial}{\partial x}\left(-\frac{\partial\Phi}{\partial t}\frac{\partial\Phi}{\partial x}\right)=0.}
+\end{equation}
+
+Remember that \eqref{noetherenergy} is a continuity equation; therefore, we can interpret $\frac{1}{2}\left(\frac{\partial\Phi}{\partial t}\right)^2+\frac{1}{2}\left(\frac{\partial\Phi}{\partial x}\right)^2$ as the energy density and $-\frac{\partial\Phi}{\partial t}\frac{\partial\Phi}{\partial x}$ as the energy current density on the string. \eqref{noetherenergy} tells us that energy is conserved locally as the guitar string wobbles.
+
+Furthermore, energy is also conserved globally. Because the endpoints of the string are fixed ($\Phi(t,0)=\Phi(t,L)=0$), there is no energy flux through them. Integrating \eqref{noetherenergy} over the whole domain $0<x<L$ leads us to:
+
+\begin{equation}\label{ENERGY}
+\frac{\partial}{\partial t}\left(\int_\Omega\frac{1}{2}\left(\frac{\partial\Phi}{\partial t}\right)^2+\frac{1}{2}\left(\frac{\partial\Phi}{\partial x}\right)^2\text{ }dx\right)=0,
+\end{equation}
+and the quantity $E\equiv\int_\Omega\frac{1}{2}\left(\frac{\partial\Phi}{\partial t}\right)^2+\frac{1}{2}\left(\frac{\partial\Phi}{\partial x}\right)^2\text{ }dx$ can be seen as the total energy of the string\footnote{Strictly speaking, $E$ does not have dimensions of energy. Rather, $\alpha E$ would be the actual energy of the system. Nevertheless, $E$ is conserved and is thus enough for our purposes.}. In our code, we calculate $E$ using Simpson's rule for all times and check if it is actually being conserved.
 \end{document}
-
-
-
-
