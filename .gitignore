@@ -1,5 +1,4 @@
 *.gif
-.vs\  
-/VisualGuitar/.vs/VisualGuitar/v16
-/VisualGuitar/x64/Debug
-/VisualGuitar/VisualGuitar/x64/Debug
+/VisualGuitar/build/
+/VisualGuitar/build.sh
+*~
