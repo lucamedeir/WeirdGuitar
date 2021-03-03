@@ -78,7 +78,8 @@ void close()
     SDL_Quit();
 }
 
-int main(int argc, char *argv[])
+#undef main
+int main(int argc, char** argv)
 {
     //Main loop flag
     bool quit = false;
@@ -177,3 +178,4 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
+
