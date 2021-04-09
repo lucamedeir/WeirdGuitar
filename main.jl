@@ -1,3 +1,10 @@
+println("loading Plots module - plotly")
+using Plots
+plotly()
+println("loading LinearAlgebra")
+using LinearAlgebra
+
+println("space discretization")
 begin #space discretization
   L = 1
   Nx = 100
@@ -6,6 +13,7 @@ begin #space discretization
   Δx = L/(Nx+1)
 end
 
+println("time discretization")
 begin #time discretization
     T=1
     Nt=100
@@ -15,8 +23,8 @@ end;
 
 c(x) =1; #velocity profile
 
+println("constructing discretization matrix")
 begin #discretization matrix
-    using LinearAlgebra
     M11=zeros(Nx,Nx)
     M12=I
     beta1 = (c.(xlu[2:end]).^2)./Δx^2
@@ -27,31 +35,27 @@ begin #discretization matrix
     M= [M11 M12;M21 M22]
 end;
 
+println("constructing Crank-Nicolson matrix")
 begin #Crank-Nicolson method
     MMl=I-M.*(Δt/2) #left-hand side matrix
     MMr=I+M.*(Δt/2) #right-hand side matrix
     iMM=inv(Array(MMl))*MMr
 end;
 
+println("Defining initial conditions")
 begin #initial conditions
     phi0=sin.((pi/L).*xlu)
     pi0=zeros(Nx)
     sol= [[phi0; pi0]]
 end;
 
+println("Applying implict Euler method")
 begin #applies implicit Euler method
     for i in 1:Nt
         push!(sol,iMM*sol[i][:])
     end
 end;
 
-begin #animation
-    using Plots
-    anim=Plots.Animation()
-    for i in 1:Nt
-        plot(xl,[0;sol[i][1:Nx];0],legend=false,ylims=(-1,1))
-        Plots.frame(anim)
-    end
-end
-
-gif(anim,"Ruela's_guitar.gif",fps=30)
+println("plotting")
+i = 5
+display(plot(xl,[0;sol[i][1:Nx];0],legend=false,ylims=(-1,1)))
